@@ -1,79 +1,450 @@
-# Golang Task Management System
+# Task Management System
 
-A robust containerized task management system built with Golang, Gin, and GORM. This system handles user authentication, authorization, and access management, allowing users to create, update, and manage tasks securely.
+> Technical Test - Backend (Go + Gin), Frontend (React Native), MySQL, Redis
 
-## Key Features
+## Overview
 
-- Secure user registration and authentication using JWT (JSON Web Tokens).
-- Protection against vulnerabilities like SQL injection attacks.
-- Support for bulk upload of tasks using CSV.
+Task Management System adalah aplikasi sederhana untuk mengelola daftar tugas (Task Management) yang dibangun menggunakan:
 
-## Prerequisites
+- **Backend:** Golang (Gin Framework)
+- **Database:** MySQL
+- **Cache:** Redis
+- **Frontend:** React Native + TypeScript
 
-Make sure you have the following installed:
+Aplikasi ini dibuat untuk memenuhi kebutuhan technical test dengan tetap memperhatikan clean code, struktur project yang baik, dan kemudahan maintenance.
 
-- Docker and Docker Compose
-- Golang
+---
 
-## Getting Started
+# Technology Stack
 
-1. Clone the repository:
-****
+## Backend
+
+- Go 1.24+
+- Gin
+- GORM
+- MySQL
+- Redis
+- Testify
+
+## Frontend
+
+- React Native
+- TypeScript
+- Axios
+- React Navigation
+
+---
+
+# Features
+
+## Backend
+
+- Create Task
+- Get All Tasks
+- Get Task Detail
+- Update Task
+- Soft Delete Task
+- Search Task
+- Status Filter
+- Assignee Filter
+- Pagination
+- Sorting
+- Consistent Error Response
+- Duplicate Title Validation (HTTP 409)
+- Redis Cache
+- Cache Invalidation
+
+---
+
+## Frontend
+
+- Task List
+- Search Task
+- Filter by Status
+- Pagination
+- Edit Task Modal
+- Loading Indicator
+- Auto Refresh after Update
+- Error Handling
+
+---
+
+# Project Structure
+
+## Backend
+
+```
+backend
+│
+├── cmd
+├── config
+├── controllers
+├── middleware
+├── models
+├── repository
+├── routes
+├── services
+├── utils
+├── tests
+├── go.mod
+└── main.go
+```
+
+---
+
+## Frontend
+
+```
+frontend
+
+src
+│
+├── api
+├── components
+├── hooks
+├── navigation
+├── screens
+└── types
+```
+
+---
+
+# Installation
+
+## Clone Repository
+
 ```bash
-git clone https://github.com/foxdreamrains/task-mangement-alif.git
-cd task-mangement-alif.git
+git clone <repository-url>
+
+cd task-management
 ```
 
-2. Set up the environment variables:
+---
 
-Copy the `.env.example` file to `.env` and update the values with your own configuration:
+# Backend Setup
+
+## Install Dependencies
 
 ```bash
-cp .env.example .env
+go mod tidy
 ```
 
-3. Build and run the Docker containers:
+---
+
+## Create .env
+
+```env
+APP_PORT=8080
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=password
+DB_NAME=task_management
+
+REDIS_HOST=localhost
+REDIS_PORT=6379
+```
+
+---
+
+## Run MySQL
+
+Pastikan MySQL telah berjalan.
+
+Buat database
+
+```sql
+CREATE DATABASE task_management;
+```
+
+---
+
+## Run Redis
+
+Windows
+
+```
+redis-server
+```
+
+Linux
+
+```
+sudo service redis-server start
+```
+
+---
+
+## Run Backend
 
 ```bash
-docker-compose up -d
+go run main.go
 ```
 
-## API Endpoints
-
-The following API endpoints are available:
-
-- **POST /user/register**: Register a new user.
-- **POST /user/login**: Log in with registered user credentials and receive a JWT token.
-- **PUT /user/logout**: Log out and invalidate the JWT token.
-- **DELETE /user/delete**: Invalidate the JWT token and Delete User.
-  
-- **GET /tasks/:id**: Get a single task by ID.
-- **GET /tasks/**: Get all tasks.
-- **POST /tasks/create**: Create a new task.
-- **POST /tasks/bulkupload**: Create a new tasks using bulk upload (explained below).
-- **PUT /tasks/update/:id**: Update an existing task by ID.
-- **DELETE /tasks/delete/:id**: Delete a task by ID.
-
-## Bulk Upload
-
-To bulk upload tasks from a CSV file, create a CSV file named `data.csv` with key: `taskBulkUpload` with the following format:
+Backend akan berjalan pada
 
 ```
-Title,Description,Planned Start Date,Planned Start Time,Planned End Date,Planned End Time,Seconds
-Task 1,Description 1,2023-07-20,09:00:00,2023-07-20,18:00:00,120000
-Task 2,Description 2,2023-07-21,09:30:00,2023-07-21,17:30:00,150000
-Task 3,Description 3,2023-07-22,10:00:00,2023-07-22,16:00:00,200000
-Task 4,Description 4,2023-07-23,10:30:00,2023-07-23,15:30:00,250000
-Task 5,Description 5,2023-07-24,11:00:00,2023-07-24,15:00:00,300000
-Task 6,Description 6,2023-07-25,11:30:00,2023-07-25,14:30:00,350000
-Task 7,Description 7,2023-07-26,12:00:00,2023-07-26,14:00:00,400000
-Task 8,Description 8,2023-07-27,12:30:00,2023-07-27,13:30:00,450000
-Task 9,Description 9,2023-07-28,13:00:00,2023-07-28,13:00:00,500000
-Task 10,Description 10,2023-07-29,13:30:00,2023-07-29,12:30:00,550000
+http://localhost:8080
 ```
-## Documentation
-Refer to the [postman documentation](https://documenter.getpostman.com/view/16151723/2s946mZ9Zr)
 
-<p align="center">
-	With :heart: by <a href="https://github.com/whoisaditya" target="_blank">Aditya Mitra</a>
-</p>
+---
+
+# Frontend Setup
+
+Masuk ke folder frontend
+
+```bash
+cd frontend
+```
+
+Install dependency
+
+```bash
+npm install
+```
+
+atau
+
+```bash
+yarn
+```
+
+---
+
+Edit Base URL
+
+```
+src/api/index.ts
+```
+
+```typescript
+export default axios.create({
+    baseURL: "http://YOUR-IP:8080/api"
+});
+```
+
+Jika menggunakan Android Emulator
+
+```
+10.0.2.2
+```
+
+Jika menggunakan perangkat fisik
+
+```
+IP Laptop
+```
+
+Contoh
+
+```
+192.168.1.10:8080
+```
+
+---
+
+Run aplikasi
+
+```bash
+npx react-native run-android
+```
+
+atau
+
+```bash
+npx react-native run-ios
+```
+
+---
+
+# API Endpoints
+
+## Task
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| GET | /api/tasks | Get All Tasks |
+| GET | /api/tasks/:id | Get Task Detail |
+| POST | /api/tasks | Create Task |
+| PUT | /api/tasks/:id | Update Task |
+| DELETE | /api/tasks/:id | Soft Delete |
+
+---
+
+## Filtering
+
+```
+GET /api/tasks
+```
+
+Query Parameter
+
+| Parameter | Example |
+|------------|---------|
+| keyword | meeting |
+| status | Done |
+| assignee | Alif |
+| page | 1 |
+| limit | 10 |
+| sort | created_at desc |
+
+Example
+
+```
+GET /api/tasks?keyword=test&page=1&limit=10&status=Done
+```
+
+---
+
+# Redis Cache
+
+GET `/api/tasks`
+
+Cache Duration
+
+```
+60 Seconds
+```
+
+Cache Key
+
+```
+tasks:{query-parameters}
+```
+
+Example
+
+```
+tasks?page=1&limit=10
+
+tasks?status=Done&page=2
+
+tasks?keyword=test
+```
+
+Cache akan dihapus otomatis setelah
+
+- Create Task
+- Update Task
+- Delete Task
+
+---
+
+# Error Response
+
+Semua endpoint menggunakan format response yang konsisten.
+
+```json
+{
+    "success": false,
+    "message": "Task not found"
+}
+```
+
+---
+
+# Success Response
+
+```json
+{
+    "success": true,
+    "message": "Task updated successfully",
+    "data": {}
+}
+```
+
+---
+
+# Testing
+
+## Backend
+
+Menjalankan seluruh test
+
+```bash
+go test ./...
+```
+
+Coverage
+
+- Update Task
+- Search Task
+- Cache Invalidation
+
+---
+
+## Frontend
+
+```bash
+npm test
+```
+
+Coverage
+
+- Search Component
+- Task List Component
+
+---
+
+# Assumptions
+
+- Soft Delete menggunakan GORM.
+- Redis hanya melakukan caching pada endpoint GET Task.
+- Cache dihapus setiap terjadi perubahan data.
+- Sorting default berdasarkan ID DESC.
+
+---
+
+# Future Improvements
+
+- JWT Authentication
+- Refresh Token
+- Docker Support
+- Swagger Documentation
+- Unit Test Coverage >90%
+- CI/CD Pipeline
+- Logging
+- Request Validation
+- Role Based Access Control (RBAC)
+- File Attachment
+- Notification Service
+
+---
+
+# Screenshots
+
+Tambahkan screenshot aplikasi pada bagian ini.
+
+```
+docs/
+
+home.png
+edit.png
+search.png
+```
+
+---
+
+# Author
+
+**Alifi V**
+
+Backend Developer
+
+Technical Test Submission
+
+---
+
+# Notes
+
+Terima kasih atas kesempatan yang diberikan untuk mengikuti proses technical test.
+
+Aplikasi ini dikembangkan dengan fokus pada:
+
+- Clean Architecture
+- Readable Code
+- Maintainability
+- Scalability
+- Best Practice Golang
+- RESTful API Standard
